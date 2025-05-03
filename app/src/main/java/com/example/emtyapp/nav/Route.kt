@@ -22,7 +22,7 @@ object Routes {
     const val Home = "home"
     const val ProductDetails = "productDetails"
 }
-
+/*
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
@@ -75,4 +75,4 @@ fun DetailsScreen(productId: String) {
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Produit ID: $productId")
     }
-}
+}*/
