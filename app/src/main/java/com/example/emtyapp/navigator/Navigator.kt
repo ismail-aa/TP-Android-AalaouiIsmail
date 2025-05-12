@@ -46,10 +46,10 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ButtonDefaults
 
-/*object Routes {
+object Routes {
     const val Home = "home"
     const val ProductDetails = "productDetails"
-}*/
+}
 
 @Composable
 fun AppNavigation() {
