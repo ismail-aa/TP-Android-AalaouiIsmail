@@ -25,3 +25,4 @@ And These are examples of the product details :
 
 - v1.0 : the original skeleton of the app
 - v1.1 : local product list and product details displays
+- v1.2 : the app was migrated into the MVI architecture and the code got cleaned a bit
