@@ -1,13 +1,11 @@
 package com.example.emtyapp.data.entities
 
-class Product {
-    /*
+data class Product(
     val id: String,
     val name: String,
-    val imageRes: Int, // Changed from URL to resource ID for local images
+    val imageRes: Int,
     val category: String,
-    val price: String, // Kept as String to preserve "DHS" suffix
+    val price: String,
     val quantity: Int,
     val description: String
-    */
-}
+)
