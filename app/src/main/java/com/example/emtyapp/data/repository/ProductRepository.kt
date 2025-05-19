@@ -2,8 +2,9 @@ package com.example.emtyapp.data.repository
 
 import com.example.emtyapp.R
 import com.example.emtyapp.data.entities.Product
+import jakarta.inject.Inject
 
-class ProductRepository {
+class ProductRepository @Inject constructor() {
     fun getProducts(): List<Product> {
         return listOf(
             Product(

@@ -26,7 +26,7 @@ object Routes {
 }
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(viewModel: ProductViewModel) {
     val navController = rememberNavController()
     val repository = remember { ProductRepository() }
     val products = remember { repository.getProducts() } // Get products once when navigation starts
@@ -34,8 +34,7 @@ fun AppNavigation() {
     NavHost(navController = navController, startDestination = Routes.Home) {
         composable(Routes.Home) {
             HomeScreen(
-                viewModel = viewModel(factory = ProductViewModel.Factory(repository)),
-                onProductClick = { productId ->
+                viewModel, onProductClick = { productId ->
                     navController.navigate("${Routes.ProductDetails}/$productId")
                 }
             )
