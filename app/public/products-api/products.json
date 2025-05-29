@@ -2,7 +2,7 @@
   {
     "id": "TAB001",
     "name" : "Tablette SAM 12 Pouce",
-    "imageRes" : "R.drawable.tablet",
+    "imageRes" : "tablet",
     "category" : "Tablette",
     "price" : "2334 DHS",
     "quantity" : 15,
@@ -11,7 +11,7 @@
   {
     "id" : "PHN001",
     "name" : "IPHONE 14 PRO",
-    "imageRes" : "R.drawable.iphone",
+    "imageRes" : "iphone",
     "category" : "Iphone",
     "price" : "13000 DHS",
     "quantity" : 5,
@@ -20,7 +20,7 @@
   {
     "id" : "TV001",
     "name" : "SMART TV 42 P",
-    "imageRes" : "R.drawable.tv",
+    "imageRes" : "tv",
     "category" : "TV",
     "price" : "4000 DHS",
     "quantity" : 20,
@@ -29,7 +29,7 @@
   {
     "id" : "LAP001",
     "name" : "Laptop Dell XPS",
-    "imageRes" : "R.drawable.laptop",
+    "imageRes" : "laptop",
     "category" : "Laptop",
     "price" : "9000 DHS",
     "quantity" : 5,
@@ -38,7 +38,7 @@
   {
     "id" : "HP001",
     "name" : "Wireless Headphones",
-    "imageRes" : "R.drawable.headphone",
+    "imageRes" : "headphone",
     "category" : "Headphones",
     "price" : "500 DHS",
     "quantity" : 0,
