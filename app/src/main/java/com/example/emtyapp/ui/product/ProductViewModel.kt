@@ -2,7 +2,6 @@ package com.example.emtyapp.ui.product
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.emtyapp.data.repository.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,12 +14,6 @@ import kotlinx.coroutines.launch
 class ProductViewModel @Inject constructor(private val repository: ProductRepository) : ViewModel() {
     private val _state = MutableStateFlow(ProductViewState())
     val state: StateFlow<ProductViewState> = _state
-
-    class Factory(private val repository: ProductRepository) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ProductViewModel(repository) as T
-        }
-    }
 
     fun handleIntent(intent: ProductIntent) {
         when (intent) {

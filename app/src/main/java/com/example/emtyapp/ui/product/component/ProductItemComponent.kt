@@ -21,6 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.emtyapp.R
 import com.example.emtyapp.data.entities.Product
 
 @Composable
@@ -41,7 +42,14 @@ fun ProductItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = product.imageRes),
+                painter = painterResource(id = when (product.imageRes.lowercase()) {
+                    "tablet" -> R.drawable.tablet
+                    "iphone" -> R.drawable.iphone
+                    "tv" -> R.drawable.tv
+                    "laptop" -> R.drawable.laptop
+                    "headphone" -> R.drawable.headphone
+                    else -> R.drawable.ic_launcher_background
+                }),
                 contentDescription = product.name,
                 modifier = Modifier.size(80.dp),
                 contentScale = ContentScale.Fit
