@@ -66,4 +66,11 @@ dependencies {
     //Hilt
     implementation("com.google.dagger:hilt-android:2.56.1")
     ksp("com.google.dagger:hilt-compiler:2.56.1")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+
+    // OkHttp pour logging
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 }
