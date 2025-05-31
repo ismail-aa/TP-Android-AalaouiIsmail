@@ -27,3 +27,4 @@ And These are examples of the product details :
 - v1.1 : local product list and product details displays
 - v1.2 : the app was migrated into the MVI architecture and the code got cleaned a bit
 - v1.2.1 : the app now has the Hilt Injection
+- v1.3 : the app now works using retrofit
