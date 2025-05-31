@@ -1,7 +1,7 @@
 package com.example.emtyapp.ui.product
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.emtyapp.data.repository.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,12 +15,6 @@ class ProductViewModel @Inject constructor(private val repository: ProductReposi
     private val _state = MutableStateFlow(ProductViewState())
     val state: StateFlow<ProductViewState> = _state
 
-    class Factory(private val repository: ProductRepository) : ViewModelProvider.Factory {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return ProductViewModel(repository) as T
-        }
-    }
-
     fun handleIntent(intent: ProductIntent) {
         when (intent) {
             ProductIntent.LoadProducts -> loadProducts()
@@ -30,11 +24,13 @@ class ProductViewModel @Inject constructor(private val repository: ProductReposi
     private fun loadProducts() = viewModelScope.launch {
         _state.value = _state.value.copy(isLoading = true, error = null)
         try {
+            Log.d("products repo", "loadProducts")
             val products = repository.getProducts()
-            _state.value = ProductViewState(products = products)
+            _state.value = ProductViewState(isLoading = false, products = products)
         } catch (e: Exception) {
+            Log.d("products repo", "Exception")
             _state.value = ProductViewState(
-                error = e.message ?: "Failed to load products"
+                isLoading = false, error = e.message ?: "Failed to load products"
             )
         }
     }
