@@ -14,10 +14,12 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -30,6 +32,15 @@ fun ProductItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+    val imageResId = remember(product.imageRes) {
+        context.resources.getIdentifier(
+            product.imageRes,
+            "drawable",
+            context.packageName
+        ).takeIf { it != 0 } ?: R.drawable.ic_launcher_background
+    }
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -42,14 +53,7 @@ fun ProductItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = when (product.imageRes.lowercase()) {
-                    "tablet" -> R.drawable.tablet
-                    "iphone" -> R.drawable.iphone
-                    "tv" -> R.drawable.tv
-                    "laptop" -> R.drawable.laptop
-                    "headphone" -> R.drawable.headphone
-                    else -> R.drawable.ic_launcher_background
-                }),
+                painter = painterResource(id = imageResId),
                 contentDescription = product.name,
                 modifier = Modifier.size(80.dp),
                 contentScale = ContentScale.Fit
