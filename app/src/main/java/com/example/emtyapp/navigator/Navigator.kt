@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
@@ -15,33 +16,53 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.compose.runtime.remember
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.emtyapp.ui.product.component.ProductDetailsScreen
-import com.example.emtyapp.data.repository.ProductRepository
+import com.example.emtyapp.ui.auth.AuthState
+import com.example.emtyapp.ui.auth.AuthViewModel
+import com.example.emtyapp.ui.auth.screen.AuthScreen
 import com.example.emtyapp.ui.product.ProductIntent
 import com.example.emtyapp.ui.product.ProductViewModel
+import com.example.emtyapp.ui.product.component.ProductDetailsScreen
 import com.example.emtyapp.ui.product.screens.HomeScreen
-import androidx.compose.runtime.getValue
 
 object Routes {
+    const val Auth = "auth"
     const val Home = "home"
     const val ProductDetails = "productDetails"
 }
 
 @Composable
-fun AppNavigation(viewModel: ProductViewModel) {
+fun AppNavigation(
+    authViewModel: AuthViewModel,
+    productViewModel: ProductViewModel
+) {
     val navController = rememberNavController()
-    val state by viewModel.state.collectAsState()
+    val authState by authViewModel.state.collectAsState()
+    val currentUser = authViewModel.currentUser // Make sure this exists in your AuthViewModel
 
-    LaunchedEffect(Unit) {
-        viewModel.handleIntent(ProductIntent.LoadProducts)
+    LaunchedEffect(authState) {
+        if (authState is AuthState.Success) {
+            navController.navigate(Routes.Home) {
+                popUpTo(Routes.Auth) { inclusive = true }
+            }
+            productViewModel.handleIntent(ProductIntent.LoadProducts)
+        }
     }
 
-    NavHost(navController = navController, startDestination = Routes.Home) {
+    NavHost(
+        navController = navController,
+        startDestination = if (currentUser != null) Routes.Home else Routes.Auth
+    ) {
+        composable(Routes.Auth) {
+            AuthScreen(
+                viewModel = authViewModel,
+                onAuthSuccess = { navController.navigate(Routes.Home) },
+                navController = navController
+            )
+        }
+
         composable(Routes.Home) {
             HomeScreen(
-                viewModel,
+                viewModel = productViewModel,
                 onProductClick = { productId ->
                     navController.navigate("${Routes.ProductDetails}/$productId")
                 }
@@ -53,14 +74,15 @@ fun AppNavigation(viewModel: ProductViewModel) {
             arguments = listOf(navArgument("productId") { type = NavType.StringType })
         ) { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId") ?: ""
+            val state by productViewModel.state.collectAsState()
             val product = state.products.find { it.id == productId }
+
             if (product != null) {
                 ProductDetailsScreen(
                     product = product,
                     onBackClick = { navController.popBackStack() }
                 )
             } else {
-                // Error handling if product not found
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
