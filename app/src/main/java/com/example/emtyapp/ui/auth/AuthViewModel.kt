@@ -58,5 +58,6 @@ class AuthViewModel @Inject constructor(
     private fun logout() {
         repository.logout()
         _state.value = AuthState.Idle
+        _showLoginForm.value = true // Reset to login form
     }
 }

@@ -63,6 +63,7 @@ fun AppNavigation(
         composable(Routes.Home) {
             HomeScreen(
                 viewModel = productViewModel,
+                authViewModel = authViewModel, // Pass authViewModel here
                 onProductClick = { productId ->
                     navController.navigate("${Routes.ProductDetails}/$productId")
                 }
