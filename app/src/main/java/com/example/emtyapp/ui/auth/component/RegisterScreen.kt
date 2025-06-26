@@ -1,5 +1,11 @@
 package com.example.emtyapp.ui.auth.component
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -38,6 +45,10 @@ import com.example.emtyapp.ui.auth.AuthState
 import com.example.emtyapp.ui.auth.AuthViewModel
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import com.example.emtyapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -60,6 +71,16 @@ fun RegisterScreen(
     var address by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+
+    val infiniteTransition = rememberInfiniteTransition()
+    val scale = infiniteTransition.animateFloat(
+        initialValue = 0.9f,
+        targetValue = 1.1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
 
     LaunchedEffect(state) {
         when (val currentState = state) {
@@ -85,6 +106,18 @@ fun RegisterScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            // App Logo
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "App Logo",
+                modifier = Modifier
+                    .size(240.dp) // Adjust size as needed
+                    .scale(scale.value) // The animation
+                    .padding(bottom = 24.dp) // Space between logo and title
+                    .padding(top = 48.dp),
+                contentScale = ContentScale.Fit
+            )
+
             Text(
                 text = "Register",
                 style = MaterialTheme.typography.headlineMedium
