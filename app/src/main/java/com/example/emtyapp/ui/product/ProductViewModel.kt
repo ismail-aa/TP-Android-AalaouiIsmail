@@ -15,10 +15,24 @@ class ProductViewModel @Inject constructor(private val repository: ProductReposi
     private val _state = MutableStateFlow(ProductViewState())
     val state: StateFlow<ProductViewState> = _state
 
+    private var _selectedCategory = MutableStateFlow<String?>(null)
+    val selectedCategory: StateFlow<String?> = _selectedCategory
+
     fun handleIntent(intent: ProductIntent) {
         when (intent) {
             ProductIntent.LoadProducts -> loadProducts()
         }
+    }
+
+    fun setCategoryFilter(category: String?) {
+        _selectedCategory.value = category
+        _state.value = _state.value.copy(
+            filteredProducts = if (category == null) {
+                _state.value.products
+            } else {
+                _state.value.products.filter { it.category == category }
+            }
+        )
     }
 
     private fun loadProducts() = viewModelScope.launch {

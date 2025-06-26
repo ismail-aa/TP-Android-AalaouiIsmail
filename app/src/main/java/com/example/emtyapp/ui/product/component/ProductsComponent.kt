@@ -1,5 +1,6 @@
 package com.example.emtyapp.ui.product.component
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,23 +21,32 @@ import com.example.emtyapp.data.entities.Product
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
+import com.example.emtyapp.ui.product.ProductViewModel
+import androidx.compose.runtime.getValue
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductListScreen(
     products: List<Product>,
     onProductClick: (String) -> Unit,
-    onLogout: () -> Unit
+    onLogout: () -> Unit,
+    viewModel: ProductViewModel // Add viewModel parameter
 ) {
+    val categories = products.map { it.category }.distinct()
+    val selectedCategory by viewModel.selectedCategory.collectAsState()
+
     Scaffold(
         topBar = {
             Column(modifier = Modifier.fillMaxWidth()) {
@@ -93,9 +103,37 @@ fun ProductListScreen(
                     style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp), // Added space below title
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 8.dp),
                     textAlign = TextAlign.Left
                 )
+
+                // Category filter chips
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .horizontalScroll(rememberScrollState())
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    // "All" filter
+                    FilterChip(
+                        selected = selectedCategory == null,
+                        onClick = { viewModel.setCategoryFilter(null) },
+                        label = { Text("All") },  // Added label parameter
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+
+                    // Category filters
+                    categories.forEach { category ->
+                        FilterChip(
+                            selected = selectedCategory == category,
+                            onClick = { viewModel.setCategoryFilter(category) },
+                            label = { Text(category) }  // Added label parameter
+                        )
+                    }
+                }
             }
         }
     ) { paddingValues ->
@@ -104,7 +142,6 @@ fun ProductListScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
                 .padding(horizontal = 16.dp)
-                .padding(top = 8.dp) // Added space above product list
         ) {
             items(products) { product ->
                 ProductItem(
