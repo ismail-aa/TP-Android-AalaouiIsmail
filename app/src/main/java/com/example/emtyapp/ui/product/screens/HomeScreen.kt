@@ -45,7 +45,7 @@ fun HomeScreen(
             }
             else -> {
                 ProductListScreen(
-                    products = state.filteredProducts.ifEmpty { state.products },
+                    products = state.filteredProducts,
                     onProductClick = onProductClick,
                     onLogout = { authViewModel.handleEvent(AuthEvent.Logout) },
                     viewModel = viewModel

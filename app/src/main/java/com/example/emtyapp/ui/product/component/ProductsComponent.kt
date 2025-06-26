@@ -31,10 +31,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.style.TextAlign
 import com.example.emtyapp.ui.product.ProductViewModel
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,7 +46,10 @@ fun ProductListScreen(
     onLogout: () -> Unit,
     viewModel: ProductViewModel // Add viewModel parameter
 ) {
-    val categories = products.map { it.category }.distinct()
+    // Get all categories from the original products list, not the filtered ones
+    val allCategories by remember { derivedStateOf {
+        viewModel.state.value.products.map { it.category }.distinct()
+    } }
     val selectedCategory by viewModel.selectedCategory.collectAsState()
 
     Scaffold(
@@ -126,7 +131,7 @@ fun ProductListScreen(
                     )
 
                     // Category filters
-                    categories.forEach { category ->
+                    allCategories.forEach { category ->
                         FilterChip(
                             selected = selectedCategory == category,
                             onClick = { viewModel.setCategoryFilter(category) },

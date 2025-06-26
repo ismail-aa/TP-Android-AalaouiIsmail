@@ -9,6 +9,7 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.combine
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(private val repository: ProductRepository) : ViewModel() {
@@ -17,6 +18,25 @@ class ProductViewModel @Inject constructor(private val repository: ProductReposi
 
     private var _selectedCategory = MutableStateFlow<String?>(null)
     val selectedCategory: StateFlow<String?> = _selectedCategory
+
+    init {
+        viewModelScope.launch {
+            combine(
+                _state,
+                _selectedCategory
+            ) { state, category ->
+                state.copy(
+                    filteredProducts = if (category == null) {
+                        state.products
+                    } else {
+                        state.products.filter { it.category == category }
+                    }
+                )
+            }.collect { newState ->
+                _state.value = newState
+            }
+        }
+    }
 
     fun handleIntent(intent: ProductIntent) {
         when (intent) {
