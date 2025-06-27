@@ -7,6 +7,6 @@ data class User(
     val username: String = "",
     val email: String = "",
     val birthDate: String = "",
-    val role: String = "client", // client, gerant, admin
+    var role: String = "client", // client, gerant, admin
     val address: String = ""
 )

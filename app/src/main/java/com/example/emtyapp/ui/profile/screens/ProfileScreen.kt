@@ -1,6 +1,7 @@
 package com.example.emtyapp.ui.profile.screens
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -61,7 +62,7 @@ fun ProfileScreen(
                             modifier = Modifier.size(48.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Default.Home,
+                                Icons.Default.Home,
                                 contentDescription = "Profile"
                             )
                         }
@@ -72,7 +73,7 @@ fun ProfileScreen(
                             modifier = Modifier.size(48.dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Default.ShoppingCart,
+                                Icons.Default.ShoppingCart,
                                 contentDescription = "Cart"
                             )
                         }
@@ -84,7 +85,7 @@ fun ProfileScreen(
                         modifier = Modifier.size(48.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.ExitToApp,
+                            Icons.Default.ExitToApp,
                             contentDescription = "Logout"
                         )
                     }
@@ -102,63 +103,80 @@ fun ProfileScreen(
             }
         }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .padding(paddingValues)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp)
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             when {
                 state.isLoading -> {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
                 }
                 state.error != null -> {
-                    Text(
-                        text = state.error ?: "Error",
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.padding(16.dp)
-                    )
+                    item {
+                        Text(
+                            text = state.error ?: "Error",
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
                 }
                 state.user != null -> {
                     val user = state.user!!
 
                     // User Info Section
-                    UserInfoComponent(
-                        user = user,
-                        viewModel = viewModel,
-                        navController = navController
-                    )
+                    item {
+                        UserInfoComponent(
+                            user = user,
+                            viewModel = viewModel,
+                            navController = navController
+                        )
+                    }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    item { Spacer(modifier = Modifier.height(16.dp)) }
 
                     // Order Tracking Section
-                    OrderTrackingComponent(
-                        orders = emptyList(), // Replace with actual orders
-                        navController = navController,
-                        viewModel = viewModel
-                    )
+                    item {
+                        OrderTrackingComponent(
+                            orders = emptyList(),
+                            navController = navController,
+                            viewModel = viewModel
+                        )
+                    }
 
                     // Conditionally show management sections based on role
                     if (user.role == "gerant" || user.role == "admin") {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        StockManagementComponent(
-                            products = emptyList(), // Replace with actual products
-                            navController = navController,
-                            viewModel = viewModel
-                        )
+                        item {
+                            StockManagementComponent(
+                                products = emptyList(),
+                                navController = navController,
+                                viewModel = viewModel
+                            )
+                        }
                     }
 
                     if (user.role == "admin") {
-                        Spacer(modifier = Modifier.height(16.dp))
-                        UserManagementComponent(
-                            users = emptyList(), // Replace with actual users
-                            navController = navController,
-                            viewModel = viewModel
-                        )
+                        item {
+                            UserManagementComponent(
+                                users = emptyList(),
+                                navController = navController,
+                                viewModel = viewModel
+                            )
+                        }
                     }
 
-                    Spacer(modifier = Modifier.height(32.dp))
+                    item { Spacer(modifier = Modifier.height(32.dp)) }
                 }
             }
         }
