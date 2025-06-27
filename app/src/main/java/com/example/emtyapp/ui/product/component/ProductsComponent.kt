@@ -37,6 +37,8 @@ import androidx.compose.ui.text.style.TextAlign
 import com.example.emtyapp.ui.product.ProductViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.navigation.NavController
+import com.example.emtyapp.navigator.Routes
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,7 +46,8 @@ fun ProductListScreen(
     products: List<Product>,
     onProductClick: (String) -> Unit,
     onLogout: () -> Unit,
-    viewModel: ProductViewModel // Add viewModel parameter
+    viewModel: ProductViewModel,
+    navController: NavController
 ) {
     // Get all categories from the original products list, not the filtered ones
     val allCategories by remember { derivedStateOf {
@@ -69,7 +72,7 @@ fun ProductListScreen(
                     ) {
                         // Profile button
                         IconButton(
-                            onClick = { /* TODO */ },
+                            onClick = { navController.navigate(Routes.Profile) },
                             modifier = Modifier.size(48.dp)
                         ) {
                             Icon(

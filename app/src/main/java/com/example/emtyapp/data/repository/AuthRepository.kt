@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    val firestore: FirebaseFirestore // Changed from private to public
 ) {
     val currentUser: FirebaseUser? get() = firebaseAuth.currentUser
 
@@ -44,5 +44,45 @@ class AuthRepository @Inject constructor(
 
     fun logout() {
         firebaseAuth.signOut()
+    }
+
+    suspend fun getUsers(): List<User> {
+        return try {
+            firestore.collection("users").get().await().toObjects(User::class.java)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    suspend fun updateUser(user: User): Boolean {
+        return try {
+            firestore.collection("users")
+                .document(user.uid)
+                .set(user)
+                .await()
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    suspend fun deleteUser(uid: String): Boolean {
+        return try {
+            // First delete auth user
+            firebaseAuth.currentUser?.let { currentUser ->
+                if (currentUser.uid == uid) {
+                    currentUser.delete().await()
+                } else {
+                    // Admin deleting another user - requires admin privileges
+                    // You might need to use Firebase Admin SDK on your backend
+                    // for this functionality
+                }
+            }
+            // Then delete user document
+            firestore.collection("users").document(uid).delete().await()
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
 }

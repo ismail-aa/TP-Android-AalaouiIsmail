@@ -18,11 +18,13 @@ import androidx.compose.ui.graphics.Color
 import com.example.emtyapp.ui.auth.AuthEvent
 import com.example.emtyapp.ui.product.ProductIntent
 import com.example.emtyapp.ui.product.component.ProductListScreen
+import androidx.navigation.NavController
 
 @Composable
 fun HomeScreen(
     viewModel: ProductViewModel,
-    authViewModel: AuthViewModel, // Add authViewModel parameter
+    authViewModel: AuthViewModel,
+    navController: NavController,
     onProductClick: (String) -> Unit
 ) {
     val state by viewModel.state.collectAsState()
@@ -48,7 +50,8 @@ fun HomeScreen(
                     products = state.filteredProducts,
                     onProductClick = onProductClick,
                     onLogout = { authViewModel.handleEvent(AuthEvent.Logout) },
-                    viewModel = viewModel
+                    viewModel = viewModel,
+                    navController = navController
                 )
             }
         }

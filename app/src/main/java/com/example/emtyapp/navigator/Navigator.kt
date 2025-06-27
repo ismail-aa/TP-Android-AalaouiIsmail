@@ -11,11 +11,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.emtyapp.ui.auth.AuthEvent
 import com.example.emtyapp.ui.auth.AuthState
 import com.example.emtyapp.ui.auth.AuthViewModel
 import com.example.emtyapp.ui.auth.screen.AuthScreen
@@ -23,11 +25,18 @@ import com.example.emtyapp.ui.product.ProductIntent
 import com.example.emtyapp.ui.product.ProductViewModel
 import com.example.emtyapp.ui.product.component.ProductDetailsScreen
 import com.example.emtyapp.ui.product.screens.HomeScreen
+import com.example.emtyapp.ui.profile.ProfileViewModel
+import com.example.emtyapp.ui.profile.screens.ProfileScreen
 
 object Routes {
     const val Auth = "auth"
     const val Home = "home"
     const val ProductDetails = "productDetails"
+    const val Profile = "profile"
+    const val UserInfo = "userInfo"
+    const val OrderTracking = "orderTracking"
+    const val StockManagement = "stockManagement"
+    const val UserManagement = "userManagement"
 }
 
 @Composable
@@ -63,7 +72,8 @@ fun AppNavigation(
         composable(Routes.Home) {
             HomeScreen(
                 viewModel = productViewModel,
-                authViewModel = authViewModel, // Pass authViewModel here
+                authViewModel = authViewModel,
+                navController = navController,
                 onProductClick = { productId ->
                     navController.navigate("${Routes.ProductDetails}/$productId")
                 }
@@ -95,6 +105,31 @@ fun AppNavigation(
                     }
                 }
             }
+        }
+
+        composable(Routes.Profile) {
+            val profileViewModel: ProfileViewModel = hiltViewModel()
+            ProfileScreen(
+                viewModel = profileViewModel,
+                navController = navController,
+                onLogout = { authViewModel.handleEvent(AuthEvent.Logout) }
+            )
+        }
+
+        composable(Routes.UserInfo) {
+            // User info edit screen
+        }
+
+        composable(Routes.OrderTracking) {
+            // Order tracking detail screen
+        }
+
+        composable(Routes.StockManagement) {
+            // Stock management screen
+        }
+
+        composable(Routes.UserManagement) {
+            // User management screen
         }
     }
 }
