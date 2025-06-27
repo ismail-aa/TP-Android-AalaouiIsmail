@@ -56,20 +56,20 @@ fun ProfileScreen(
                         modifier = Modifier.weight(1f),
                         horizontalArrangement = Arrangement.Start
                     ) {
-                        // Profile button
+                        // Home button
                         IconButton(
                             onClick = { navController.navigate(Routes.Home) },
                             modifier = Modifier.size(48.dp)
                         ) {
                             Icon(
                                 Icons.Default.Home,
-                                contentDescription = "Profile"
+                                contentDescription = "Home"
                             )
                         }
 
                         // Cart button
                         IconButton(
-                            onClick = { /* TODO */ },
+                            onClick = { navController.navigate(Routes.Cart) },
                             modifier = Modifier.size(48.dp)
                         ) {
                             Icon(

@@ -21,6 +21,8 @@ import com.example.emtyapp.ui.auth.AuthEvent
 import com.example.emtyapp.ui.auth.AuthState
 import com.example.emtyapp.ui.auth.AuthViewModel
 import com.example.emtyapp.ui.auth.screen.AuthScreen
+import com.example.emtyapp.ui.cart.CartViewModel
+import com.example.emtyapp.ui.cart.screen.CartScreen
 import com.example.emtyapp.ui.product.ProductIntent
 import com.example.emtyapp.ui.product.ProductViewModel
 import com.example.emtyapp.ui.product.component.ProductDetailsScreen
@@ -37,6 +39,7 @@ object Routes {
     const val OrderTracking = "orderTracking"
     const val StockManagement = "stockManagement"
     const val UserManagement = "userManagement"
+    const val Cart = "cart"
 }
 
 @Composable
@@ -70,9 +73,12 @@ fun AppNavigation(
         }
 
         composable(Routes.Home) {
+            val cartViewModel: CartViewModel = hiltViewModel()
+
             HomeScreen(
                 viewModel = productViewModel,
                 authViewModel = authViewModel,
+                cartViewModel = cartViewModel,
                 navController = navController,
                 onProductClick = { productId ->
                     navController.navigate("${Routes.ProductDetails}/$productId")
@@ -130,6 +136,15 @@ fun AppNavigation(
 
         composable(Routes.UserManagement) {
             // User management screen
+        }
+
+        composable(Routes.Cart) {
+            val cartViewModel: CartViewModel = hiltViewModel()
+            CartScreen(
+                navController,
+                cartViewModel,
+                onLogout = { authViewModel.handleEvent(AuthEvent.Logout) }
+            )
         }
     }
 }

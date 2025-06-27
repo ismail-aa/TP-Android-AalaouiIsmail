@@ -26,6 +26,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.navigation.NavController
 import com.example.emtyapp.navigator.Routes
+import com.example.emtyapp.ui.cart.CartViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,6 +50,7 @@ fun ProductListScreen(
     onProductClick: (String) -> Unit,
     onLogout: () -> Unit,
     viewModel: ProductViewModel,
+    cartViewModel: CartViewModel,
     navController: NavController
 ) {
     // Get all categories from the original products list, not the filtered ones
@@ -83,13 +87,24 @@ fun ProductListScreen(
 
                         // Cart button
                         IconButton(
-                            onClick = { /* TODO */ },
+                            onClick = { navController.navigate(Routes.Cart) },
                             modifier = Modifier.size(48.dp)
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.ShoppingCart,
-                                contentDescription = "Cart"
-                            )
+                            val cartItemCount by cartViewModel.cartItems.collectAsState()
+                            BadgedBox(
+                                badge = {
+                                    if (cartItemCount.isNotEmpty()) {
+                                        Badge {
+                                            Text(cartItemCount.values.sum().toString())
+                                        }
+                                    }
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.ShoppingCart,
+                                    contentDescription = "Cart"
+                                )
+                            }
                         }
                     }
 
@@ -154,7 +169,8 @@ fun ProductListScreen(
             items(products) { product ->
                 ProductItem(
                     product = product,
-                    onClick = { onProductClick(product.id) }
+                    onClick = { onProductClick(product.id) },
+                    onAddToCart = { cartViewModel.addToCart(product) }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
             }

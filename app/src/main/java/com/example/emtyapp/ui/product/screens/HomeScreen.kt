@@ -19,11 +19,13 @@ import com.example.emtyapp.ui.auth.AuthEvent
 import com.example.emtyapp.ui.product.ProductIntent
 import com.example.emtyapp.ui.product.component.ProductListScreen
 import androidx.navigation.NavController
+import com.example.emtyapp.ui.cart.CartViewModel
 
 @Composable
 fun HomeScreen(
     viewModel: ProductViewModel,
     authViewModel: AuthViewModel,
+    cartViewModel: CartViewModel,
     navController: NavController,
     onProductClick: (String) -> Unit
 ) {
@@ -51,6 +53,7 @@ fun HomeScreen(
                     onProductClick = onProductClick,
                     onLogout = { authViewModel.handleEvent(AuthEvent.Logout) },
                     viewModel = viewModel,
+                    cartViewModel = cartViewModel,
                     navController = navController
                 )
             }

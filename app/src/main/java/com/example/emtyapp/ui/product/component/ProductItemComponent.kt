@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +31,7 @@ import com.example.emtyapp.data.entities.Product
 fun ProductItem(
     product: Product,
     onClick: () -> Unit,
+    onAddToCart: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -81,6 +83,12 @@ fun ProductItem(
                     color = if (product.quantity > 0) Color.Unspecified else Color.Red
                 )
             }
+        }
+        Button(
+            onClick = onAddToCart,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Add to Cart")
         }
     }
 }
