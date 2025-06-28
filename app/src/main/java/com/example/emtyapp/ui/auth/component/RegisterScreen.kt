@@ -48,6 +48,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.example.emtyapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -87,7 +88,7 @@ fun RegisterScreen(
             is AuthState.Success -> onRegisterSuccess()
             is AuthState.Error -> {
                 scope.launch {
-                    snackbarHostState.showSnackbar(currentState.message)
+                    snackbarHostState.showSnackbar(context.getString(R.string.registration_failed))
                 }
             }
             else -> {}
@@ -109,7 +110,7 @@ fun RegisterScreen(
             // App Logo
             Image(
                 painter = painterResource(id = R.drawable.logo),
-                contentDescription = "App Logo",
+                contentDescription = stringResource(R.string.app_name),
                 modifier = Modifier
                     .size(240.dp) // Adjust size as needed
                     .scale(scale.value) // The animation
@@ -119,7 +120,7 @@ fun RegisterScreen(
             )
 
             Text(
-                text = "Register",
+                text = stringResource(R.string.register),
                 style = MaterialTheme.typography.headlineMedium
             )
 
@@ -128,7 +129,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = firstName,
                 onValueChange = { firstName = it },
-                label = { Text("First Name") },
+                label = { Text(stringResource(R.string.first_name)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -137,7 +138,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = lastName,
                 onValueChange = { lastName = it },
-                label = { Text("Last Name") },
+                label = { Text(stringResource(R.string.last_name)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -146,7 +147,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = username,
                 onValueChange = { username = it },
-                label = { Text("Username") },
+                label = { Text(stringResource(R.string.username)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -155,7 +156,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email") },
+                label = { Text(stringResource(R.string.email)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
@@ -165,7 +166,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = birthDate,
                 onValueChange = { birthDate = it },
-                label = { Text("Birth Date (YYYY-MM-DD)") },
+                label = { Text(stringResource(R.string.birth_date)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -174,7 +175,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = address,
                 onValueChange = { address = it },
-                label = { Text("Address") },
+                label = { Text(stringResource(R.string.address)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -183,7 +184,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Password") },
+                label = { Text(stringResource(R.string.password)) },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
@@ -194,7 +195,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = confirmPassword,
                 onValueChange = { confirmPassword = it },
-                label = { Text("Confirm Password") },
+                label = { Text(stringResource(R.string.confirm_password)) },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
@@ -206,7 +207,7 @@ fun RegisterScreen(
                 onClick = {
                     if (password != confirmPassword) {
                         scope.launch {
-                            snackbarHostState.showSnackbar("Passwords don't match")
+                            snackbarHostState.showSnackbar(context.getString(R.string.passwords_dont_match))
                         }
                         return@Button
                     }
@@ -226,7 +227,7 @@ fun RegisterScreen(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = state !is AuthState.Loading
             ) {
-                Text("Register")
+                Text(stringResource(R.string.register))
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -234,7 +235,7 @@ fun RegisterScreen(
             TextButton(
                 onClick = onNavigateToLogin
             ) {
-                Text("Already have an account? Login")
+                Text(stringResource(R.string.already_have_account))
             }
         }
     }

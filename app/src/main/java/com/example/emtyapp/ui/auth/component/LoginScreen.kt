@@ -50,6 +50,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import com.example.emtyapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,7 +84,7 @@ fun LoginScreen(
             is AuthState.Success -> onLoginSuccess()
             is AuthState.Error -> {
                 scope.launch {
-                    snackbarHostState.showSnackbar(currentState.message)
+                    snackbarHostState.showSnackbar(context.getString(R.string.login_failed))
                 }
             }
             else -> {}
@@ -105,7 +106,7 @@ fun LoginScreen(
             // App Logo
             Image(
                 painter = painterResource(id = R.drawable.logo),
-                contentDescription = "App Logo",
+                contentDescription = stringResource(R.string.app_name),
                 modifier = Modifier
                     .size(240.dp) // Adjust size as needed
                     .scale(scale.value) // The animation
@@ -115,7 +116,7 @@ fun LoginScreen(
             )
 
             Text(
-                text = "Login",
+                text = stringResource(R.string.login),
                 style = MaterialTheme.typography.headlineMedium
             )
 
@@ -124,7 +125,7 @@ fun LoginScreen(
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text("Email") },
+                label = { Text(stringResource(R.string.email)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
             )
@@ -134,7 +135,7 @@ fun LoginScreen(
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text("Password") },
+                label = { Text(stringResource(R.string.password)) },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
@@ -149,7 +150,7 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 enabled = state !is AuthState.Loading
             ) {
-                Text("Login")
+                Text(stringResource(R.string.login))
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -157,7 +158,7 @@ fun LoginScreen(
             TextButton(
                 onClick = onNavigateToRegister
             ) {
-                Text("Don't have an account? Register")
+                Text(stringResource(R.string.dont_have_account))
             }
         }
     }

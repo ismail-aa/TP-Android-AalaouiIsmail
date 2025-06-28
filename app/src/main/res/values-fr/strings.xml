@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">ShopFiesta</string>
+    <string name="dog">Chien</string>
+    <string name="login">Authentification</string>
+    <string name="email">E-mail</string>
+    <string name="password">Mot De Passe</string>
+    <string name="register">Inscription</string>
+    <string name="first_name">Prénom</string>
+    <string name="last_name">Nom</string>
+    <string name="username">Nom D\'Utilisateur</string>
+    <string name="birth_date">Date De Naissance (AAAA-MM-JJ)</string>
+    <string name="address">Adresse</string>
+    <string name="confirm_password">Valider Le Mot De Passe</string>
+    <string name="dont_have_account">Pas De Compte? Inscrivez Vous</string>
+    <string name="already_have_account">Vous Avez Déja Un Compte? Authentifiez Vous</string>
+    <string name="login_failed">Authentification Échoué. Veuillez Vérifier Vos Coordonnées.</string>
+    <string name="registration_failed">Inscription Échoué. Veuillez Réessayer.</string>
+    <string name="passwords_dont_match">Mots De Passes Non Identiques</string>
+</resources>
