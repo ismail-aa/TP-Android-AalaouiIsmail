@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "567852341101",
+    "project_id": "empyapp",
+    "storage_bucket": "empyapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567852341101:android:0b38917a4892ff69caec64",
+        "android_client_info": {
+          "package_name": "com.example.emtyapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOpLcCyw1Z2SLfFYYjSChXRmzAT3JbIjU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

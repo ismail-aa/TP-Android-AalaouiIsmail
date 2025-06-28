@@ -1,6 +1,9 @@
 package com.example.emtyapp.data.DI
 
 import com.example.emtyapp.data.Api.ProductApi
+import com.example.emtyapp.data.repository.AuthRepository
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +17,21 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+
+    @Provides
+    @Singleton
+    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideFirestore(): FirebaseFirestore = FirebaseFirestore.getInstance()
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(
+        auth: FirebaseAuth,
+        firestore: FirebaseFirestore
+    ): AuthRepository = AuthRepository(auth, firestore)
 
     @Provides
     fun provideBaseUrl(): String = "https://raw.githubusercontent.com/ismail-aa/TP-Android-AalaouiIsmail/refs/heads/main/app/public/products-api/"
